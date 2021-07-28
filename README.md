@@ -19,15 +19,17 @@ pip install github-token-app
 
 - **BASE64_PRIVATE_PEM_KEY**: This is the private pem key for the github-app encoded in base64.
 - **GITHUB_APP_ID**: App ID
-- **INSTALLATION_ID**: Installation Id for App/Org Pair (if you don't know, it can be generated from the second step below)
+- **INSTALLATION_ID**: Installation Id for App/Org Pair (if you don't know, Please check the steps below)
 
 
 ## What the code does?
 
 
-1. The code is for authenticating a [github app as an installation](https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-an-installation). Installations are created from a Github app settings (Install App). 
+1. The code is for authenticating a [github app as an installation](https://docs.github.com/en/developers/apps/building-github-apps/authenticating-with-github-apps#authenticating-as-an-installation). Installations are created from a Github app settings (Install App).
 
-2. The code contains `get_installations` function which can be called by CLI command `gta installations`. It returns a response of list of installations. The `id` attributes in the responses are the installation ids. Set the **INSTALLATION_ID** as environment variable based on your required access. 
+2. Under Install App, click on the account settings. You will find the installation ID in the URL https://github.com/apps/my-app-name/installations/**INSTALLATION_ID**. Set the **INSTALLATION_ID** as environment variable based on your required access.
+
+    Alternatively, the code contains `get_installations` function which can be called by CLI command `gta installations`. It returns a response of list of installations. The `id` attributes in the responses are the installation ids. 
 
 3. Finally, there are three methods read, write and write-pr. That generates token to perform respective actions to specific repositories.
 
