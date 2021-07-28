@@ -5,7 +5,7 @@ from typing import List
 
 from setuptools import find_packages, setup
 
-VERSION = "0.0.0"
+VERSION = "0.1.0"
 
 
 def generate_install_requires() -> List[str]:
