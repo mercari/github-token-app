@@ -19,7 +19,7 @@ pip install github-token-app
 
 - **BASE64_PRIVATE_PEM_KEY**: This is the private pem key for the github-app encoded in base64.
 - **GITHUB_APP_ID**: App ID
-- **INSTALLATION_ID**: Installation Id for App/Org Pair (if you don't know, Please check the steps below)
+- **INSTALLATION_ID**: Installation Id for App/Org Pair (if you don't know, it can be generated from the second step below)
 
 
 ## What the code does?
