@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pipenv-to-requirements = "*"
+bumpversion = "*"
+black = "==19.10b0"
+flake8 = "*"
+isort = {extras = ["pipfile"],version = "*"}
+
+[packages]
+"github3.py" = "*"
+typer = "*"
+
+[requires]
+python_version = "3.8"
