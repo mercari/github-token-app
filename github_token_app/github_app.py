@@ -32,7 +32,7 @@ def get_default_app():
             try:
                 installation_id = int(installation_id)
             except ValueError:
-                print(f"[Warning] Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
+                raise ValueError(f"Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
 
         get_default_app.app = GithubApp(app_id=github_app_id, private_pem_key=pem_key, installation_id=installation_id)
 
