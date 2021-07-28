@@ -16,25 +16,25 @@ def get_default_app():
 
         pem_key = base64.b64decode(pem_key)
 
-        app_id = os.getenv("GITHUB_APP_ID", "")
-        if not app_id:
+        github_app_id = os.getenv("GITHUB_APP_ID", "")
+        if not github_app_id:
             raise RuntimeError("Missing Environment Variable: 'GITHUB_APP_ID'")
 
         try:
-            app_id = int(app_id)
+            github_app_id = int(github_app_id)
         except ValueError:
-            raise ValueError(f"Invalid $GITHUB_APP_ID={app_id}, NOT a valid integer")
+            raise ValueError(f"Invalid $GITHUB_APP_ID={github_app_id}, NOT a valid integer")
 
         installation_id = os.getenv("INSTALLATION_ID", "")
         if not installation_id:
-            raise RuntimeError("Missing Environment Variable: 'INSTALLATION_ID'")
+            print("[Warning] Missing Environment Variable: 'INSTALLATION_ID'")
+        else:
+            try:
+                installation_id = int(installation_id)
+            except ValueError:
+                print(f"[Warning] Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
 
-        try:
-            installation_id = int(installation_id)
-        except ValueError:
-            raise ValueError(f"Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
-
-        get_default_app.app = GithubApp(app_id=app_id, private_pem_key=pem_key, installation_id=installation_id)
+        get_default_app.app = GithubApp(app_id=github_app_id, private_pem_key=pem_key, installation_id=installation_id)
 
     return get_default_app.app
 
@@ -148,6 +148,21 @@ class GithubApp:
         permissions = {"contents": "write", "pull_requests": "write", "metadata": "read"}
         return self.get_access_token(repo_names, permissions)
 
+    def get_installations(self):
+        headers = apps.create_jwt_headers(
+            private_key_pem=self.private_pem_key, app_id=self.app_id, expire_in=600  # Max allowed: 60*10 (10 minutes)
+        )
+        url = "https://api.github.com/app/installations"
+
+        response = requests.get(url=url, headers=headers)
+        if response.status_code != 200:
+            raise Exception(
+                "Failed to get fetch repositories. "
+                f"Status code: {response.status_code} "
+                f"Response: {response.json()} "
+            )
+        return response.json()
+
 
 def get_read_token(repo_names: List[str]) -> None:
     """
@@ -177,3 +192,11 @@ def get_write_pr_token(repo_names: List[str]) -> None:
     """
     github_app = get_default_app()
     print(github_app.get_write_pr_token(repo_names))
+
+
+def get_installations():
+    """
+    Get the list of installations for the authenticated app.
+    """
+    github_app = get_default_app()
+    pprint(github_app.get_installations())
