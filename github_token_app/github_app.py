@@ -10,25 +10,31 @@ from github3 import apps
 
 def get_default_app():
     if not hasattr(get_default_app, "app"):
-        pem_key = os.getenv("BASE64_PRIVATE_PEM_KEY")
+        pem_key = os.getenv("BASE64_PRIVATE_PEM_KEY", "")
         if not pem_key:
             raise RuntimeError("Missing Environment Variable: 'BASE64_PRIVATE_PEM_KEY'")
 
         pem_key = base64.b64decode(pem_key)
 
-        app_id = os.getenv("GITHUB_APP_ID")
-        try:
-            app_id = int(app_id)
-        except ValueError:
-            raise ValueError(f"Invalid $GITHUB_APP_ID={app_id}, NOT a valid integer")
+        github_app_id = os.getenv("GITHUB_APP_ID", "")
+        if not github_app_id:
+            raise RuntimeError("Missing Environment Variable: 'GITHUB_APP_ID'")
 
-        installation_id = os.getenv("INSTALLATION_ID")
         try:
-            installation_id = int(installation_id)
+            github_app_id = int(github_app_id)
         except ValueError:
-            raise ValueError(f"Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
+            raise ValueError(f"Invalid $GITHUB_APP_ID={github_app_id}, NOT a valid integer")
 
-        get_default_app.app = GithubApp(app_id=app_id, private_pem_key=pem_key, installation_id=installation_id)
+        installation_id = os.getenv("INSTALLATION_ID", "")
+        if not installation_id:
+            print("[Warning] Missing Environment Variable: 'INSTALLATION_ID'")
+        else:
+            try:
+                installation_id = int(installation_id)
+            except ValueError:
+                raise ValueError(f"Invalid $INSTALLATION_ID={installation_id}, NOT a valid integer")
+
+        get_default_app.app = GithubApp(app_id=github_app_id, private_pem_key=pem_key, installation_id=installation_id)
 
     return get_default_app.app
 
