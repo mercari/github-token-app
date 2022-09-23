@@ -6,9 +6,11 @@ verify_ssl = true
 [dev-packages]
 pipenv-to-requirements = "*"
 bumpversion = "*"
-black = "==19.10b0"
+black = "*"
 flake8 = "*"
-isort = {extras = ["pipfile"],version = "*"}
+isort = {extras = ["requirements"],version = "*"}
+mypy = "*"
+types-requests = "*"
 
 [packages]
 "github3.py" = "*"

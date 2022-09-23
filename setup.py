@@ -5,7 +5,7 @@ from typing import List
 
 from setuptools import find_packages, setup
 
-VERSION = "0.1.1"
+VERSION = "0.2.0"
 
 
 def generate_install_requires() -> List[str]:
@@ -34,5 +34,7 @@ setup(
     install_requires=generate_install_requires(),
     zip_safe=False,
     include_package_data=True,
-    entry_points={"console_scripts": ["gta = github_token_app.cli:main"],},
+    entry_points={
+        "console_scripts": ["gta = github_token_app.cli:main"],
+    },
 )
