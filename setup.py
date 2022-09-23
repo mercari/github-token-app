@@ -34,5 +34,7 @@ setup(
     install_requires=generate_install_requires(),
     zip_safe=False,
     include_package_data=True,
-    entry_points={"console_scripts": ["gta = github_token_app.cli:main"],},
+    entry_points={
+        "console_scripts": ["gta = github_token_app.cli:main"],
+    },
 )
