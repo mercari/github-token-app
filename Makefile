@@ -1,5 +1,5 @@
-.PHONY: requirements
-requirements:
+.PHONY: req
+req:
 	pipenv run pipenv_to_requirements
 	rm requirements-dev.txt
 
